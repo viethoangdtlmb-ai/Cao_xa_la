@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanoi Seasons Garden - Tổng Hợp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; font-family: 'Outfit', sans-serif; background: #f0f2f5; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .top-nav { background: #1A365D; padding: 10px 20px; display: flex; gap: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); z-index: 10; align-items: center; justify-content: center; }
+        .nav-btn { background: transparent; color: rgba(255,255,255,0.7); border: none; padding: 12px 24px; font-size: 16px; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.3s; font-family: inherit; }
+        .nav-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+        .nav-btn.active { color: #1A365D; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .frame-container { flex: 1; position: relative; }
+        iframe { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; opacity: 0; pointer-events: none; transition: opacity 0.3s; background: #fff; }
+        iframe.active { opacity: 1; pointer-events: all; }
+        
+        @media (max-width: 600px) {
+            .top-nav { padding: 10px; }
+            .nav-btn { padding: 10px 12px; font-size: 14px; flex: 1; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <button class="nav-btn active" onclick="switchTab('bg')">📊 Bảng Giá Dự Kiến</button>
+        <button class="nav-btn" onclick="switchTab('tt')">🗓️ Tính Lịch Thanh Toán</button>
+    </div>
+    <div class="frame-container">
+        <iframe id="frame-bg" class="active" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+    &lt;title&gt;Bảng Giá Dự Kiến: HANOI SEASONS GARDEN&lt;/title&gt;
+    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+    &lt;style&gt;
+        :root {
+            --primary: #1A365D;
+            /* Deep Navy */
+            --primary-light: #2A4365;
+            --accent: #D4AF37;
+            /* Premium Gold */
+            --accent-light: #FDF6E3;
+            --bg: #F8FAFC;
+            --surface: #FFFFFF;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+            --border: #E2E8F0;
+            --highlight: #EFF6FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: &#x27;Outfit&#x27;, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+            background-image: radial-gradient(var(--border) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3.5rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 24px;
+            color: white;
+            box-shadow: 0 20px 40px rgba(26, 54, 93, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::after {
+            content: &#x27;&#x27;;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.05) 50%, transparent 55%);
+            background-size: 200% 200%;
+            animation: shine 5s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes shine {
+            0% {
+                background-position: 200% center;
+            }
+
+            100% {
+                background-position: -200% center;
+            }
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .note-card {
+            background: var(--surface);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+            border-left: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .note-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .note-icon {
+            font-size: 1.8rem;
+            background: var(--accent-light);
+            padding: 0.75rem;
+            border-radius: 12px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title::before {
+            content: &#x27;&#x27;;
+            display: inline-block;
+            width: 30px;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+
+        .table-wrapper {
+            background: var(--surface);
+            border-radius: 20px;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            margin-bottom: 4rem;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 1200px;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 1.25rem 1rem;
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        th:first-child {
+            border-top-left-radius: 20px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 20px;
+        }
+
+        .group-header th {
+            border-bottom: 2px solid rgba(255,255,255,0.15);
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fff;
+            padding: 1rem;
+            border-radius: 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .group-header th:first-child {
+            border-top-left-radius: 20px;
+        }
+
+        .group-header th:last-child {
+            border-top-right-radius: 20px;
+        }
+
+        /* Group colors - header row */
+        .gh-info, .gh-tiendo, .gh-vay, .gh-tts { 
+            background: var(--primary-light); 
+        }
+
+        /* Group colors - sub-header row */
+        .sh-info, .sh-tiendo, .sh-vay, .sh-tts { 
+            background: var(--primary) !important; 
+            color: #fff !important; 
+        }
+
+        /* Group tints on data cells - Reverted to transparent */
+        .td-info, .td-tiendo, .td-vay, .td-tts { 
+            background-color: transparent; 
+        }
+        
+        .td-tiendo-unit, .td-vay-unit, .td-tts-unit { 
+            background-color: rgba(212, 175, 55, 0.04); 
+            font-weight: 700; 
+            color: #B8860B; 
+        }
+
+        /* Strong vertical dividers between groups */
+        .gh-info, .gh-tiendo, .gh-vay {
+            border-right: 2px solid rgba(255, 255, 255, 0.3) !important;
+        }
+        
+        .sh-info:nth-child(2), .sh-tiendo:nth-child(4), .sh-vay:nth-child(6) {
+            border-right: 2px solid rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .td-info:nth-child(2), .td-tiendo, .td-vay {
+            border-right: 2px solid var(--border) !important;
+        }
+
+
+        td {
+            padding: 1.25rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        tbody tr {
+            transition: all 0.3s ease;
+            background-color: var(--surface);
+        }
+
+        tbody tr:hover {
+            background-color: var(--highlight);
+            transform: translateY(-2px) scale(1.002);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            z-index: 10;
+            position: relative;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .type-col {
+            font-weight: 600;
+            color: var(--primary);
+            text-align: left;
+            padding-left: 2rem;
+            width: 12%;
+        }
+
+        .area-col {
+            color: var(--text-muted);
+            font-weight: 500;
+            width: 12%;
+        }
+
+        .price-col {
+            font-weight: 500;
+            color: var(--text-main);
+            width: 12%;
+        }
+
+        /* Highlighting Unit Price Columns */
+        .unit-price-col {
+            font-weight: 700;
+            color: #B8860B;
+            /* Darker gold for text readability */
+            background-color: rgba(212, 175, 55, 0.04);
+            width: 13%;
+        }
+
+        td.unit-price-col {
+            border-left: 1px dashed var(--border);
+            border-right: 1px dashed var(--border);
+        }
+
+        .empty-cell {
+            color: var(--border) !important;
+        }
+
+        code {
+            background: rgba(26, 54, 93, 0.05);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .note-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .type-col {
+                padding-left: 1rem;
+            }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div class=&quot;container&quot;&gt;
+        &lt;header&gt;
+            &lt;h1&gt;Bảng Giá Dự Kiến&lt;/h1&gt;
+            &lt;div class=&quot;subtitle&quot;&gt;HANOI SEASONS GARDEN (CAO XÀ LÁ)&lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;div class=&quot;note-card&quot;&gt;
+            &lt;div class=&quot;note-icon&quot;&gt;✨&lt;/div&gt;
+            &lt;div&gt;
+                &lt;strong style=&quot;color: var(--primary); font-size: 1.1rem; display: block; margin-bottom: 0.25rem;&quot;&gt;Phương
+                    pháp ước lượng Đơn Giá&lt;/strong&gt;
+                &lt;code&gt;Đơn giá Min = Tổng giá Min / Diện tích Min&lt;/code&gt; &amp;nbsp;&amp;mdash;&amp;nbsp;
+                &lt;code&gt;Đơn giá Max = Tổng giá Max / Diện tích Max&lt;/code&gt;&lt;br&gt;
+                &lt;span style=&quot;color: var(--text-muted); font-size: 0.95rem; display: inline-block; margin-top: 0.5rem;&quot;&gt;
+                    *Lưu ý: Đối với các khoảng diện tích, giá trị này thể hiện vùng giá trị tham khảo hợp lý nhất của
+                    đơn giá m² (Đơn vị tính: Triệu VNĐ/m²).
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;h2 class=&quot;section-title&quot;&gt;1. VIEW ĐƯỜNG NGUYỄN TRÃI&lt;/h2&gt;
+        &lt;div class=&quot;table-wrapper&quot;&gt;
+            &lt;table&gt;
+                &lt;thead&gt;
+                    &lt;tr class=&quot;group-header&quot;&gt;
+                        &lt;th colspan=&quot;2&quot; class=&quot;gh-info&quot;&gt;🏠 THÔNG TIN CHUNG&lt;/th&gt;
+                        &lt;th colspan=&quot;2&quot; class=&quot;gh-tiendo&quot;&gt;📅 THANH TOÁN TIẾN ĐỘ&lt;/th&gt;
+                        &lt;th colspan=&quot;2&quot; class=&quot;gh-vay&quot;&gt;🏦 VAY NGÂN HÀNG (HTLS 70%)&lt;/th&gt;
+                        &lt;th colspan=&quot;2&quot; class=&quot;gh-tts&quot;&gt;⚡ THANH TOÁN SỚM&lt;/th&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;th class=&quot;sh-info&quot; style=&quot;text-align:left;padding-left:2rem;&quot;&gt;LOẠI HÌNH&lt;/th&gt;
+                        &lt;th class=&quot;sh-info&quot;&gt;DIỆN TÍCH (m²)&lt;/th&gt;
+                        &lt;th class=&quot;sh-tiendo&quot;&gt;ĐƠN GIÁ (Tr/m²)&lt;/th&gt;
+                        &lt;th class=&quot;sh-tiendo&quot;&gt;TỔNG GIÁ (Tỷ)&lt;/th&gt;
+                        &lt;th class=&quot;sh-vay&quot;&gt;ĐƠN GIÁ (Tr/m²)&lt;/th&gt;
+                        &lt;th class=&quot;sh-vay&quot;&gt;TỔNG GIÁ (Tỷ)&lt;/th&gt;
+                        &lt;th class=&quot;sh-tts&quot;&gt;ĐƠN GIÁ (Tr/m²)&lt;/th&gt;
+                        &lt;th class=&quot;sh-tts&quot;&gt;TỔNG GIÁ (Tỷ)&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;STUDIO&lt;/td&gt;
+                        &lt;td class=&quot;td-info empty-cell&quot;&gt;-&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;-&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo empty-cell&quot;&gt;-&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;-&lt;/td&gt;
+                        &lt;td class=&quot;td-vay empty-cell&quot;&gt;-&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;-&lt;/td&gt;
+                        &lt;td class=&quot;td-tts empty-cell&quot;&gt;-&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;1BR&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;59.8&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;129.3 - 153.6&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;7,733 - 9,183&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;140.8 - 167.2&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;8,421 - 9,998&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;112.3 - 133.4&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;6,718 - 7,979&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;1BR + 1MR&lt;/td&gt;
+                        &lt;td class=&quot;td-info empty-cell&quot;&gt;-&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;-&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo empty-cell&quot;&gt;-&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;-&lt;/td&gt;
+                        &lt;td class=&quot;td-vay empty-cell&quot;&gt;-&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;-&lt;/td&gt;
+                        &lt;td class=&quot;td-tts empty-cell&quot;&gt;-&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;2BR&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;82.4 - 95.8&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;132.3 - 151.3&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;10,902 - 14,493&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;144.1 - 164.7&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;11,871 - 15,780&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;114.9 - 131.4&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;9,470 - 12,592&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;2BR + 1MR&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;110.7&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;127.9 - 151.9&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;14,156 - 16,811&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;139.2 - 165.3&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;15,414 - 18,304&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;111.1 - 132.0&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;12,296 - 14,607&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;3BR + 1MR&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;143.1&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;136.4 - 161.1&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;19,512 - 23,047&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;148.5 - 175.4&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;21,246 - 25,093&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;118.4 - 139.9&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;16,950 - 20,026&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+
+        &lt;h2 class=&quot;section-title&quot;&gt;2. VIEW NỘI KHU&lt;/h2&gt;
+        &lt;div class=&quot;table-wrapper&quot;&gt;
+            &lt;table&gt;
+                &lt;thead&gt;
+                    &lt;tr class=&quot;group-header&quot;&gt;
+                        &lt;th colspan=&quot;2&quot; class=&quot;gh-info&quot;&gt;🏠 THÔNG TIN CHUNG&lt;/th&gt;
+                        &lt;th colspan=&quot;2&quot; class=&quot;gh-tiendo&quot;&gt;📅 THANH TOÁN TIẾN ĐỘ&lt;/th&gt;
+                        &lt;th colspan=&quot;2&quot; class=&quot;gh-vay&quot;&gt;🏦 VAY NGÂN HÀNG (HTLS 70%)&lt;/th&gt;
+                        &lt;th colspan=&quot;2&quot; class=&quot;gh-tts&quot;&gt;⚡ THANH TOÁN SỚM&lt;/th&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;th class=&quot;sh-info&quot; style=&quot;text-align:left;padding-left:2rem;&quot;&gt;LOẠI HÌNH&lt;/th&gt;
+                        &lt;th class=&quot;sh-info&quot;&gt;DIỆN TÍCH (m²)&lt;/th&gt;
+                        &lt;th class=&quot;sh-tiendo&quot;&gt;ĐƠN GIÁ (Tr/m²)&lt;/th&gt;
+                        &lt;th class=&quot;sh-tiendo&quot;&gt;TỔNG GIÁ (Tỷ)&lt;/th&gt;
+                        &lt;th class=&quot;sh-vay&quot;&gt;ĐƠN GIÁ (Tr/m²)&lt;/th&gt;
+                        &lt;th class=&quot;sh-vay&quot;&gt;TỔNG GIÁ (Tỷ)&lt;/th&gt;
+                        &lt;th class=&quot;sh-tts&quot;&gt;ĐƠN GIÁ (Tr/m²)&lt;/th&gt;
+                        &lt;th class=&quot;sh-tts&quot;&gt;TỔNG GIÁ (Tỷ)&lt;/th&gt;
+                    &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;STUDIO&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;31.9&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;136.4 - 158.6&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;4,352 - 5,058&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;148.5 - 172.6&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;4,738 - 5,507&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;118.5 - 137.8&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;3,781 - 4,395&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;1BR&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;51.3 - 63.6&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;136.7 - 168.5&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;7,013 - 10,718&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;148.8 - 183.5&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;7,636 - 11,669&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;118.8 - 146.4&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;6,092 - 9,313&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;1BR + 1MR&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;83.6 - 94.0&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;147.0 - 164.7&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;12,292 - 15,486&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;160.1 - 179.4&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;13,384 - 16,860&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;127.7 - 143.2&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;10,679 - 13,457&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;2BR&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;83.2 - 94.2&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;137.4 - 158.1&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;11,435 - 14,892&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;149.7 - 172.1&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;12,451 - 16,213&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;119.4 - 137.4&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;9,933 - 12,939&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;2BR + 1MR&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;125.4 - 131.1&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;139.8 - 174.2&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;17,536 - 22,841&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;152.3 - 189.7&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;19,094 - 24,867&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;121.5 - 151.4&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;15,235 - 19,849&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td class=&quot;type-col td-info&quot;&gt;3BR + 1MR&lt;/td&gt;
+                        &lt;td class=&quot;td-info&quot;&gt;150.2 - 152.7&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo-unit&quot;&gt;154.3 - 174.1&lt;/td&gt;
+                        &lt;td class=&quot;td-tiendo&quot;&gt;23,173 - 26,589&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-vay-unit&quot;&gt;168.0 - 189.6&lt;/td&gt;
+                        &lt;td class=&quot;td-vay&quot;&gt;25,230 - 28,947&lt;/td&gt;
+                        
+                        &lt;td class=&quot;td-tts-unit&quot;&gt;134.1 - 151.3&lt;/td&gt;
+                        &lt;td class=&quot;td-tts&quot;&gt;20,135 - 23,105&lt;/td&gt;
+                        
+                    &lt;/tr&gt;
+                &lt;/tbody&gt;
+            &lt;/table&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;"></iframe>
+        <iframe id="frame-tt" srcdoc="&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;vi&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+&lt;title&gt;Lịch Thanh Toán — Hanoi Seasons Garden&lt;/title&gt;
+&lt;link href=&quot;https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;style&gt;
+:root{--navy:#1a2b5e;--gold:#b88600;--dkgreen:#2d5a27;--ltgreen:#4a7c3f;--bg:#f5f7fa;--text:#1a1a2e;--muted:#6b7280;--border:#e5e7eb;--accent:#e8f0fe}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:&#x27;Inter&#x27;,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+.header{background:linear-gradient(135deg,#1a2b5e,#0f1f4a);padding:32px 24px;text-align:center;position:relative;overflow:hidden}
+.header::before{content:&#x27;&#x27;;position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(184,134,0,.15),transparent 70%)}
+.badge-top{display:inline-block;background:rgba(184,134,0,.2);border:1px solid rgba(184,134,0,.4);color:#f0c040;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:12px}
+.header h1{color:#fff;font-size:28px;font-weight:700;position:relative}
+.header p{color:rgba(255,255,255,.65);font-size:13px;margin-top:6px;position:relative}
+.wrap{max-width:880px;margin:0 auto;padding:28px 16px 60px}
+.card{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 16px rgba(0,0,0,.07);margin-bottom:20px}
+.card-title{font-size:14px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:1px;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.card-title::before{content:&#x27;&#x27;;display:block;width:4px;height:18px;background:var(--gold);border-radius:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:600px){.grid2{grid-template-columns:1fr}}
+.fg label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.fg input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:&#x27;Inter&#x27;,sans-serif;background:#fafafa;transition:border-color .2s}
+.fg input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(26,43,94,.08);background:#fff}
+.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.tab{flex:1;min-width:130px;padding:12px 10px;border-radius:12px;border:2px solid var(--border);background:#fff;cursor:pointer;font-family:&#x27;Inter&#x27;,sans-serif;font-size:13px;font-weight:600;color:var(--muted);transition:all .2s;text-align:center;line-height:1.4}
+.tab:hover{border-color:var(--navy);color:var(--navy)}
+.tab.on{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 4px 12px rgba(26,43,94,.3)}
+.tab .ti{font-size:18px;display:block;margin-bottom:2px}
+.info-box{background:linear-gradient(135deg,#f0f4ff,#e8f0fe);border:1px solid #c7d7f5;border-radius:10px;padding:14px 16px;font-size:13px;color:var(--navy);margin-bottom:16px;line-height:1.6;display:none}
+.info-box.show{display:block}
+.info-box strong{color:var(--gold)}
+.btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--navy),#0f1f4a);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;font-family:&#x27;Inter&#x27;,sans-serif;cursor:pointer;transition:all .2s;letter-spacing:.5px;margin-top:4px}
+.btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,43,94,.35)}
+#result{display:none}
+.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:4px}
+@media(max-width:580px){.sum-grid{grid-template-columns:1fr 1fr}}
+.si{background:var(--accent);border-radius:12px;padding:16px;text-align:center}
+.si .sl{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.si .sv{font-size:17px;font-weight:700;color:var(--navy);margin-top:4px}
+.si.gold{background:#fffbee}.si.gold .sv{color:var(--gold)}
+.si.green{background:#f0fdf4}.si.green .sv{color:var(--ltgreen)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:580px}
+thead th{background:var(--navy);color:#fff;padding:11px 14px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+thead th:last-child{text-align:right}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+tbody tr:hover{background:#f8faff}
+tbody td{padding:11px 14px;vertical-align:middle}
+tbody td:last-child{text-align:right}
+.tr-last td{background:var(--navy);color:#fff;font-weight:700}
+.bdg{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase}
+.bn{background:rgba(26,43,94,.1);color:var(--navy)}
+.bg{background:rgba(45,90,39,.1);color:var(--dkgreen)}
+.bo{background:rgba(184,134,0,.12);color:var(--gold)}
+.tr-last .bdg{background:rgba(255,255,255,.2);color:#fff}
+.amc{font-weight:700;color:var(--navy)}
+.tr-last .amc{color:#fff}
+.mc{color:var(--muted);font-size:12px}
+.tr-last .mc{color:rgba(255,255,255,.75)}
+.loan-card{background:linear-gradient(135deg,var(--dkgreen),var(--ltgreen));border-radius:14px;padding:20px;color:#fff;margin-top:16px}
+.loan-card h3{font-size:15px;font-weight:700;margin-bottom:14px}
+.lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:500px){.lgrid{grid-template-columns:1fr 1fr}}
+.li{background:rgba(255,255,255,.15);border-radius:10px;padding:12px;text-align:center}
+.ll{font-size:11px;opacity:.8;margin-bottom:4px}
+.lv{font-size:16px;font-weight:700}
+.note-box{font-size:12px;color:var(--muted);background:#f9fafb;border-radius:8px;padding:10px 14px;margin-top:16px;line-height:1.7}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div class=&quot;header&quot;&gt;
+  &lt;div class=&quot;badge-top&quot;&gt;Hanoi Seasons Garden &amp;middot; Masterise Homes&lt;/div&gt;
+  &lt;h1&gt;&amp;#127749; Lịch Thanh Toán Dự Kiến&lt;/h1&gt;
+  &lt;p&gt;Chính sách khảo sát (Dự kiến) &amp;middot; Bàn giao Q2/2029&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;wrap&quot;&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;card-title&quot;&gt;Thông tin căn hộ&lt;/div&gt;
+    &lt;div class=&quot;grid2&quot;&gt;
+      &lt;div class=&quot;fg&quot;&gt;
+        &lt;label&gt;Giá trị căn hộ (tỷ đồng)&lt;/label&gt;
+        &lt;input type=&quot;number&quot; id=&quot;price&quot; placeholder=&quot;VD: 8.5&quot; step=&quot;0.1&quot; min=&quot;0.5&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;fg&quot;&gt;
+        &lt;label&gt;Ngày ký XNĐK (dự kiến)&lt;/label&gt;
+        &lt;input type=&quot;date&quot; id=&quot;startDate&quot; value=&quot;2026-05-14&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;card&quot;&gt;
+    &lt;div class=&quot;card-title&quot;&gt;Chọn phương thức thanh toán&lt;/div&gt;
+    &lt;div class=&quot;tabs&quot;&gt;
+      &lt;button class=&quot;tab on&quot; onclick=&quot;setPolicy(&#x27;standard&#x27;,this)&quot;&gt;&lt;span class=&quot;ti&quot;&gt;&amp;#128197;&lt;/span&gt;Tiến Độ Chuẩn&lt;/button&gt;
+      &lt;button class=&quot;tab&quot; onclick=&quot;setPolicy(&#x27;loan&#x27;,this)&quot;&gt;&lt;span class=&quot;ti&quot;&gt;&amp;#127974;&lt;/span&gt;Vay HTLS 70%&lt;/button&gt;
+      &lt;button class=&quot;tab&quot; onclick=&quot;setPolicy(&#x27;early&#x27;,this)&quot;&gt;&lt;span class=&quot;ti&quot;&gt;&amp;#9889;&lt;/span&gt;Thanh Toán Sớm&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;i-standard&quot; class=&quot;info-box show&quot;&gt;
+      &amp;#128204; &lt;strong&gt;Tiến độ chuẩn&lt;/strong&gt; — Thanh toán 14 đợt theo tiến độ xây dựng từ T5/2026 đến Q2/2029. Phù hợp khách hàng &lt;strong&gt;không vay ngân hàng&lt;/strong&gt;.
+    &lt;/div&gt;
+    &lt;div id=&quot;i-loan&quot; class=&quot;info-box&quot;&gt;
+      &amp;#127974; &lt;strong&gt;Vay HTLS 70%&lt;/strong&gt; — Ngân hàng giải ngân 70%, &lt;strong&gt;HTLS 0% và ân hạn gốc&lt;/strong&gt; trong xây dựng. Sau bàn giao 24 tháng: cố định &lt;strong&gt;7.5%/năm&lt;/strong&gt;.
+    &lt;/div&gt;
+    &lt;div id=&quot;i-early&quot; class=&quot;info-box&quot;&gt;
+      &amp;#9889; &lt;strong&gt;Thanh toán sớm&lt;/strong&gt; — Thanh toán dứt điểm 70% trong 30 ngày sau ký HĐMB. Áp dụng &lt;strong&gt;giá TTS dự kiến&lt;/strong&gt; (chiết khấu từ CĐT).
+    &lt;/div&gt;
+    &lt;button class=&quot;btn&quot; onclick=&quot;calculate()&quot;&gt;&amp;#129518; Tính Lịch Thanh Toán&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;result&quot;&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;card-title&quot;&gt;Tổng quan thanh toán&lt;/div&gt;
+      &lt;div class=&quot;sum-grid&quot; id=&quot;sumGrid&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;card&quot;&gt;
+      &lt;div class=&quot;card-title&quot;&gt;Chi tiết lịch thanh toán&lt;/div&gt;
+      &lt;div class=&quot;tw&quot;&gt;
+        &lt;table&gt;
+          &lt;thead&gt;&lt;tr&gt;
+            &lt;th&gt;#&lt;/th&gt;&lt;th&gt;Đợt thanh toán&lt;/th&gt;&lt;th&gt;Ngày đến hạn&lt;/th&gt;
+            &lt;th&gt;Tỷ lệ&lt;/th&gt;&lt;th&gt;Số tiền (tỷ)&lt;/th&gt;&lt;th&gt;Lũy kế&lt;/th&gt;
+          &lt;/tr&gt;&lt;/thead&gt;
+          &lt;tbody id=&quot;tbody&quot;&gt;&lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/div&gt;
+      &lt;div id=&quot;loanBox&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;note-box&quot;&gt;
+        (*) Chính sách áp dụng tại từng thời điểm ban hành của Chủ đầu tư Masterise Homes.&lt;br&gt;
+        Số liệu mang tính tham khảo. Ngày đến hạn thực tế xác nhận theo HĐMB chính thức.&lt;br&gt;
+        KPBT = Kinh phí bảo trì 2% giá bán, đóng tại thời điểm bàn giao căn hộ.
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var pol = &#x27;standard&#x27;;
+function setPolicy(p, btn) {
+  pol = p;
+  document.querySelectorAll(&#x27;.tab&#x27;).forEach(function(b){ b.classList.remove(&#x27;on&#x27;); });
+  btn.classList.add(&#x27;on&#x27;);
+  document.getElementById(&#x27;i-standard&#x27;).className = &#x27;info-box&#x27; + (p===&#x27;standard&#x27;?&#x27; show&#x27;:&#x27;&#x27;);
+  document.getElementById(&#x27;i-loan&#x27;).className = &#x27;info-box&#x27; + (p===&#x27;loan&#x27;?&#x27; show&#x27;:&#x27;&#x27;);
+  document.getElementById(&#x27;i-early&#x27;).className = &#x27;info-box&#x27; + (p===&#x27;early&#x27;?&#x27; show&#x27;:&#x27;&#x27;);
+}
+function addDays(s,n){ var d=new Date(s+&#x27;T00:00:00&#x27;); d.setDate(d.getDate()+n); return d; }
+function fd(s){ return new Date(s+&#x27;T00:00:00&#x27;); }
+function fmtDate(d){ var dd=(&#x27;0&#x27;+d.getDate()).slice(-2); var mm=(&#x27;0&#x27;+(d.getMonth()+1)).slice(-2); return dd+&#x27;/&#x27;+mm+&#x27;/&#x27;+d.getFullYear(); }
+function fmtNum(n){ return n.toFixed(3).replace(/\B(?=(\d{3})+(?!\d))/g,&#x27;,&#x27;); }
+function makeRow(cells,cls){
+  var tr=document.createElement(&#x27;tr&#x27;);
+  if(cls) tr.className=cls;
+  cells.forEach(function(c){ var td=document.createElement(&#x27;td&#x27;); td.innerHTML=c.html||&#x27;&#x27;; if(c.cls) td.className=c.cls; tr.appendChild(td); });
+  return tr;
+}
+function calculate(){
+  var priceVal=parseFloat(document.getElementById(&#x27;price&#x27;).value);
+  var startStr=document.getElementById(&#x27;startDate&#x27;).value;
+  if(!priceVal||priceVal&lt;=0||!startStr){ alert(&#x27;Vui lòng nhập đầy đủ thông tin!&#x27;); return; }
+  var P=priceVal;
+  var KPBT=P*0.02;
+  var d0=new Date(startStr+&#x27;T00:00:00&#x27;);
+  var rows=[];
+  var xndk={label:&#x27;Ký XNĐK&#x27;,note:&#x27;Đặt cọc nội bộ&#x27;,date:d0,pct:0,fixedAmt:0.05,badgeCls:&#x27;bn&#x27;,isBank:false};
+  var kytt_note=&#x27;Số tiền nộp thêm (10% trừ 50tr đặt cọc XNĐK)&#x27;;
+  if(pol===&#x27;standard&#x27;){
+    rows=[
+      xndk,
+      {label:&#x27;Ký Thỏa Thuận&#x27;,note:kytt_note,date:addDays(startStr,7),pct:10,deduct:0.05,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Không muộn hơn 30/09/2026&#x27;,note:&#x27;&#x27;,date:fd(&#x27;2026-09-30&#x27;),pct:10,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Ký HĐMB&#x27;,note:&#x27;(Dự kiến T10/2026)&#x27;,date:fd(&#x27;2026-10-31&#x27;),pct:5,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Đợt 5&#x27;,note:&#x27;20/01/2027&#x27;,date:fd(&#x27;2027-01-20&#x27;),pct:10,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Đợt 6&#x27;,note:&#x27;20/04/2027&#x27;,date:fd(&#x27;2027-04-20&#x27;),pct:5,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Đợt 7&#x27;,note:&#x27;20/07/2027&#x27;,date:fd(&#x27;2027-07-20&#x27;),pct:5,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Đợt 8&#x27;,note:&#x27;20/10/2027&#x27;,date:fd(&#x27;2027-10-20&#x27;),pct:5,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Đợt 9&#x27;,note:&#x27;20/01/2028&#x27;,date:fd(&#x27;2028-01-20&#x27;),pct:5,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Đợt 10&#x27;,note:&#x27;20/04/2028&#x27;,date:fd(&#x27;2028-04-20&#x27;),pct:5,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Đợt 11&#x27;,note:&#x27;20/07/2028&#x27;,date:fd(&#x27;2028-07-20&#x27;),pct:5,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Đợt 12&#x27;,note:&#x27;20/10/2028&#x27;,date:fd(&#x27;2028-10-20&#x27;),pct:5,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Đợt 13&#x27;,note:&#x27;20/01/2029&#x27;,date:fd(&#x27;2029-01-20&#x27;),pct:5,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Bàn giao + KPBT&#x27;,note:&#x27;(Dự kiến Q2/2029)&#x27;,date:fd(&#x27;2029-06-30&#x27;),pct:25,addKpbt:true,badgeCls:&#x27;bo&#x27;,isBank:false},
+    ];
+  } else if(pol===&#x27;loan&#x27;){
+    rows=[
+      xndk,
+      {label:&#x27;Ký Thỏa Thuận&#x27;,note:kytt_note,date:addDays(startStr,7),pct:10,deduct:0.05,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Không muộn hơn 30/09/2026&#x27;,note:&#x27;&#x27;,date:fd(&#x27;2026-09-30&#x27;),pct:10,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Ký HĐMB&#x27;,note:&#x27;(Dự kiến T10/2026, trong 30 ngày)&#x27;,date:fd(&#x27;2026-10-31&#x27;),pct:10,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Ngân hàng giải ngân 70%&#x27;,note:&#x27;HTLS 0% + Ân hạn gốc đến bàn giao&#x27;,date:fd(&#x27;2026-11-30&#x27;),pct:70,badgeCls:&#x27;bg&#x27;,isBank:true},
+      {label:&#x27;Bàn giao — đóng KPBT 2%&#x27;,note:&#x27;(Dự kiến Q2/2029)&#x27;,date:fd(&#x27;2029-06-30&#x27;),pct:0,addKpbt:true,badgeCls:&#x27;bo&#x27;,isBank:false},
+    ];
+  } else {
+    rows=[
+      xndk,
+      {label:&#x27;Ký Thỏa Thuận&#x27;,note:kytt_note,date:addDays(startStr,7),pct:10,deduct:0.05,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Không muộn hơn 30/09/2026&#x27;,note:&#x27;&#x27;,date:fd(&#x27;2026-09-30&#x27;),pct:10,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Ký HĐMB&#x27;,note:&#x27;(Dự kiến T10/2026, trong 30 ngày)&#x27;,date:fd(&#x27;2026-10-31&#x27;),pct:10,badgeCls:&#x27;bn&#x27;,isBank:false},
+      {label:&#x27;Thanh toán sớm 70%&#x27;,note:&#x27;Áp dụng giá TTS (chiết khấu CĐT)&#x27;,date:fd(&#x27;2026-11-30&#x27;),pct:70,badgeCls:&#x27;bo&#x27;,isBank:false},
+      {label:&#x27;Bàn giao — đóng KPBT 2%&#x27;,note:&#x27;(Dự kiến Q2/2029)&#x27;,date:fd(&#x27;2029-06-30&#x27;),pct:0,addKpbt:true,badgeCls:&#x27;bo&#x27;,isBank:false},
+    ];
+  }
+  var tbody=document.getElementById(&#x27;tbody&#x27;);
+  tbody.innerHTML=&#x27;&#x27;;
+  var cumPct=0, selfTotal=0;
+  rows.forEach(function(r,i){
+    var amt, pctLabel;
+    if(r.fixedAmt!==undefined){
+      amt=r.fixedAmt; pctLabel=&#x27;50tr&#x27;; selfTotal+=amt;
+    } else {
+      amt=(r.pct/100)*P;
+      if(r.deduct) amt-=r.deduct;
+      pctLabel=r.pct+&#x27;%&#x27;;
+      if(!r.isBank) selfTotal+=amt;
+      cumPct+=r.pct;
+    }
+    if(r.addKpbt){ 
+      amt+=KPBT; selfTotal+=KPBT; cumPct+=2; 
+      pctLabel = r.pct === 0 ? &#x27;2%&#x27; : r.pct + &#x27;% + 2%&#x27;;
+    }
+    var isLast=(i===rows.length-1);
+    var noteHtml=r.note?&#x27;&lt;br&gt;&lt;span class=&quot;mc&quot;&gt;&#x27;+r.note+&#x27;&lt;/span&gt;&#x27;:&#x27;&#x27;;
+    var amtDisplay=(r.fixedAmt!==undefined)?&#x27;0.050&#x27;:fmtNum(amt);
+    var tr=makeRow([
+      {html:String(i+1)},
+      {html:&#x27;&lt;strong&gt;&#x27;+r.label+&#x27;&lt;/strong&gt;&#x27;+noteHtml},
+      {html:fmtDate(r.date)},
+      {html:&#x27;&lt;span class=&quot;bdg &#x27;+r.badgeCls+&#x27;&quot;&gt;&#x27;+pctLabel+&#x27;&lt;/span&gt;&#x27;},
+      {html:amtDisplay,cls:&#x27;amc&#x27;},
+      {html:cumPct&gt;0?cumPct+&#x27;%&#x27;:&#x27;—&#x27;,cls:&#x27;mc&#x27;},
+    ],isLast?&#x27;tr-last&#x27;:&#x27;&#x27;);
+    tbody.appendChild(tr);
+  });
+  var pNames={standard:&#x27;Tiến độ chuẩn&#x27;,loan:&#x27;Vay HTLS 70%&#x27;,early:&#x27;Thanh toán sớm&#x27;};
+  var selfLabel=pol===&#x27;loan&#x27;?&#x27;Vốn tự có phải nộp&#x27;:&#x27;Tổng tiền phải nộp&#x27;;
+  var sg=document.getElementById(&#x27;sumGrid&#x27;);
+  sg.innerHTML=&#x27;&#x27;;
+  [{label:&#x27;Giá trị căn hộ&#x27;,val:fmtNum(priceVal)+&#x27; tỷ&#x27;,cls:&#x27;&#x27;},
+   {label:&#x27;KPBT (2%)&#x27;,val:fmtNum(KPBT)+&#x27; tỷ&#x27;,cls:&#x27;gold&#x27;},
+   {label:&#x27;Phương thức&#x27;,val:pNames[pol],cls:&#x27;&#x27;},
+   {label:selfLabel,val:fmtNum(selfTotal)+&#x27; tỷ&#x27;,cls:&#x27;green&#x27;},
+   {label:&#x27;Bàn giao dự kiến&#x27;,val:&#x27;Q2/2029&#x27;,cls:&#x27;&#x27;},
+   {label:&#x27;Tổng số đợt&#x27;,val:String(rows.length),cls:&#x27;&#x27;},
+  ].forEach(function(it){
+    var d=document.createElement(&#x27;div&#x27;);
+    d.className=&#x27;si &#x27;+it.cls;
+    d.innerHTML=&#x27;&lt;div class=&quot;sl&quot;&gt;&#x27;+it.label+&#x27;&lt;/div&gt;&lt;div class=&quot;sv&quot;&gt;&#x27;+it.val+&#x27;&lt;/div&gt;&#x27;;
+    sg.appendChild(d);
+  });
+  var lb=document.getElementById(&#x27;loanBox&#x27;);
+  if(pol===&#x27;loan&#x27;){
+    var loanAmt=P*0.70;
+    lb.innerHTML=&#x27;&lt;div class=&quot;loan-card&quot;&gt;&lt;h3&gt;&amp;#127974; Chi tiết gói vay HTLS 70%&lt;/h3&gt;&lt;div class=&quot;lgrid&quot;&gt;&#x27;
+      +&#x27;&lt;div class=&quot;li&quot;&gt;&lt;div class=&quot;ll&quot;&gt;Ngân hàng giải ngân (70%)&lt;/div&gt;&lt;div class=&quot;lv&quot;&gt;&#x27;+fmtNum(loanAmt)+&#x27; tỷ&lt;/div&gt;&lt;/div&gt;&#x27;
+      +&#x27;&lt;div class=&quot;li&quot;&gt;&lt;div class=&quot;ll&quot;&gt;Vốn tự có phải chuẩn bị&lt;/div&gt;&lt;div class=&quot;lv&quot;&gt;&#x27;+fmtNum(selfTotal)+&#x27; tỷ&lt;/div&gt;&lt;/div&gt;&#x27;
+      +&#x27;&lt;div class=&quot;li&quot;&gt;&lt;div class=&quot;ll&quot;&gt;HTLS trong xây dựng&lt;/div&gt;&lt;div class=&quot;lv&quot;&gt;0% + Ân hạn gốc&lt;/div&gt;&lt;/div&gt;&#x27;
+      +&#x27;&lt;div class=&quot;li&quot;&gt;&lt;div class=&quot;ll&quot;&gt;Lãi suất sau bàn giao&lt;/div&gt;&lt;div class=&quot;lv&quot;&gt;7.5%/năm (CĐ 24 tháng)&lt;/div&gt;&lt;/div&gt;&#x27;
+      +&#x27;&lt;div class=&quot;li&quot;&gt;&lt;div class=&quot;ll&quot;&gt;Trả gốc/tháng (20 năm)&lt;/div&gt;&lt;div class=&quot;lv&quot;&gt;&#x27;+fmtNum(loanAmt/240)+&#x27; tỷ&lt;/div&gt;&lt;/div&gt;&#x27;
+      +&#x27;&lt;div class=&quot;li&quot;&gt;&lt;div class=&quot;ll&quot;&gt;Gốc + lãi tháng đầu&lt;/div&gt;&lt;div class=&quot;lv&quot;&gt;&#x27;+fmtNum(loanAmt/240+loanAmt*0.075/12)+&#x27; tỷ&lt;/div&gt;&lt;/div&gt;&#x27;
+      +&#x27;&lt;/div&gt;&lt;/div&gt;&#x27;;
+  } else { lb.innerHTML=&#x27;&#x27;; }
+  document.getElementById(&#x27;result&#x27;).style.display=&#x27;block&#x27;;
+  document.getElementById(&#x27;result&#x27;).scrollIntoView({behavior:&#x27;smooth&#x27;,block:&#x27;start&#x27;});
+}
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('iframe').forEach(f => f.classList.remove('active'));
+            
+            if(tab === 'bg') {
+                document.querySelectorAll('.nav-btn')[0].classList.add('active');
+                document.getElementById('frame-bg').classList.add('active');
+            } else {
+                document.querySelectorAll('.nav-btn')[1].classList.add('active');
+                document.getElementById('frame-tt').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
